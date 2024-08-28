@@ -19,6 +19,8 @@ model List {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   todos     Todo[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Todo {
@@ -29,4 +31,13 @@ model Todo {
   updatedAt DateTime @updatedAt
   listId    Int
   list      List     @relation(fields: [listId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lists     List[]
 }
