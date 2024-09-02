@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchLists, addList, deleteList } from './api';
+import { fetchLists, addList, deleteList } from '../api';
 
 export const useLists = () => {
   const [lists, setLists] = useState<List[]>([]);

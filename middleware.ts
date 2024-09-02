@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken'
+import * as jose from 'jose'
 
 export function middleware(request: NextRequest) {
   const token = request.headers.get('Authorization')?.split(' ')[1]
@@ -11,13 +11,19 @@ export function middleware(request: NextRequest) {
       { status: 401, headers: { 'content-type': 'application/json' } }
     )
   }
-
+  
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!)
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+    
+    const verify = jose.jwtVerify(token, secret)
+    const decoded = jose.decodeJwt(token) as jose.JWTPayload;
+    if (typeof decoded === 'string' || decoded.exp == null) {
+      throw new Error('Invalid token structure')
+    }
     // Add the decoded token to the request headers
     const requestHeaders = new Headers(request.headers)
-    requestHeaders.set('user', JSON.stringify(decoded))
-
+    requestHeaders.set('user_id', String(decoded.id));
+    requestHeaders.set('username', String(decoded.username));
     return NextResponse.next({
       request: {
         headers: requestHeaders,
@@ -25,6 +31,7 @@ export function middleware(request: NextRequest) {
     });
     
   } catch (error) {
+    console.error('Error processing token:', error);
     return new NextResponse(
       JSON.stringify({ success: false, message: 'Invalid token' }),
       { status: 401, headers: { 'content-type': 'application/json' } }
@@ -34,8 +41,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/api/:path*',
-    '!/api/users/register',
-    '!/api/users/login'
+    '/api/todos/:path*',
+    '/api/lists/:path*',
   ],
 }

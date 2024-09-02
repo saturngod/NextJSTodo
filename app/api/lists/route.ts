@@ -7,8 +7,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-    const { title } = await request.json();
-    const list = await prisma.list.create({ data: { title } });
+    const { title } = await request.json() as { title: string };
+    const userId = await request.headers.get("user_id");
+    
+    const list = await prisma.list.create({ data: { title, userId: Number(userId) } });
     return NextResponse.json(list);
 }
 

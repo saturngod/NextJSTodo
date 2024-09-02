@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         // Create user in the database
         const user = await prisma.user.create({ data: { username, password: passwordHash } });
 
-        return NextResponse.json({ success: true, user });
+        return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Error creating user:', error);
         return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addTodo, getTodos, toggleTodo, deleteTodo } from './api';
+import { addTodo, getTodos, toggleTodo, deleteTodo } from '../api';
 
 export const useTodos = (mytodos: Todo[]) => {
 

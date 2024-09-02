@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import ListView from './components/ListView';
 import TodoView from './components/TodoView';

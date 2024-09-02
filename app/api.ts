@@ -1,43 +1,58 @@
+import { headers } from "next/headers";
+
 export const fetchLists = async () => {
-  const response = await fetch('/api/lists');
+  const token = localStorage.getItem('token');
+  const response = await fetch('/api/lists', { headers: {'Authorization': `Bearer ${token}`,}});
   return response.json();
 };
 
 export const deleteList = async (id: number) => {
-  await fetch(`/api/lists/${id}`, { method: 'DELETE' });
+
+  const token = localStorage.getItem('token');
+  await fetch(`/api/lists/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}`, } });
 };
 
 export const addList = async (title: string) => {
+
+  const token = localStorage.getItem('token');
+
   const response = await fetch('/api/lists', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
     body: JSON.stringify({ title }),
   });
   return response.json();
 };
 
 export const getTodos = async (id: number): Promise<List> => {
-    const response = await fetch(`/api/lists/${id}`);
-    return response.json();
+  const token = localStorage.getItem('token');
+  const response = await fetch(`/api/lists/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+  return response.json();
 };
 
 export const addTodo = async (title: string, listId: number) => {
+  const token = localStorage.getItem('token');
   const response = await fetch('/api/todos', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     body: JSON.stringify({ title, listId }),
   });
   return response.json();
 };
 
 export const toggleTodo = async (id: number, completed: boolean) => {
+  const token = localStorage.getItem('token');
   await fetch(`/api/todos/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     body: JSON.stringify({ completed }),
   });
 };
 
 export const deleteTodo = async (id: number) => {
-  await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+  const token = localStorage.getItem('token');
+  await fetch(`/api/todos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
 };

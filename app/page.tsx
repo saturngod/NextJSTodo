@@ -1,7 +1,13 @@
 'use client';
 
-import TodoApp from "./TodoApp";
+import Link from "next/link";
+
+
 
 export default function Home() {
-  return <TodoApp/>;
+  return <>
+  <h1>Todo App</h1>
+  <Link href="/login">Login</Link>
+  <Link href="/register">Register</Link>
+  </>;
 }
