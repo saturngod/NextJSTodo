@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import crypto from 'crypto';
+import {userLogin} from '../api';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -14,14 +14,8 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const timestamp = Date.now();
-    const hash = crypto.createHash('sha256').update(username + "" + password + "" + timestamp).digest('hex');
-    const response = await fetch('/api/users/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, timestamp, hash }),
-    });
-    const data = await response.json();
+    
+    const data = await userLogin(username, password);
     if (data.success) {
       // Store the token in localStorage or a secure cookie
       localStorage.setItem('token', data.accessToken);

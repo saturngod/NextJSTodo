@@ -1,8 +1,12 @@
 import * as jose from 'jose'
 import { NextResponse } from 'next/server'
 
-const accessTokenSecret = process.env.JWT_SECRET || 'defaultAccessSecretKey';
-const refreshTokenSecret = process.env.JWT_REFRESH_SECRET || 'defaultRefreshSecretKey';
+const accessTokenSecret = process.env.JWT_SECRET;
+const refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
+
+if (!accessTokenSecret || !refreshTokenSecret) {
+    throw new Error('JWT secrets are not set in environment variables');
+}
 
 export async function POST(request: Request) {
     try {

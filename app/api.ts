@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import crypto from 'crypto';
 
 export const fetchLists = async () => {
   const token = localStorage.getItem('token');
@@ -56,3 +57,42 @@ export const deleteTodo = async (id: number) => {
   const token = localStorage.getItem('token');
   await fetch(`/api/todos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
 };
+
+export const userLogin = async (username: string, password: string) => {
+
+  const timestamp = Date.now();
+  const hash = crypto.createHash('sha256').update(username + "" + password + "" + timestamp).digest('hex');
+
+  const response = await fetch('/api/users/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password, timestamp, hash }),
+  });
+
+  return response.json();
+}
+
+export const userRegister = async (username: string, password: string) => {
+
+  const timestamp = Date.now();
+  const hash = crypto.createHash('sha256').update(username + "" + password + "" + timestamp).digest('hex');
+
+  const response = await fetch('/api/users/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password, timestamp,hash }),
+  });
+
+  return response.json();
+}
+
+export const refreshToken = async () => {
+  const response = await fetch('/api/token/refresh', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${refreshToken}`,
+    },
+  });
+  return response;
+}

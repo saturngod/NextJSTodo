@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import TodoApp from "./TodoApp";
 import * as jose from 'jose';
+import { refreshToken } from '@/app/api';
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,17 +21,11 @@ export default function Home() {
             if (decodedToken.exp && decodedToken.exp < currentTime) {
               console.log('Token is expired');
               // Token is expired, try to refresh
-              const refreshToken = localStorage.getItem('refreshToken');
+              const localRefreshToken = localStorage.getItem('refreshToken');
               
-              if (refreshToken) {
+              if (localRefreshToken) {
                 try {
-                  const response = await fetch('/api/token/refresh', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${refreshToken}`,
-                    },
-                  });
+                  const response = await refreshToken();
 
                   if (response.ok) {
                     const data = await response.json();

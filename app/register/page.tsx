@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import crypto from 'crypto';
+import { userRegister } from '../api';
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -32,16 +33,7 @@ export default function Register() {
       return;
     }
 
-    const timestamp = Date.now();
-
-    const hash = crypto.createHash('sha256').update(username + "" + password + "" + timestamp).digest('hex');
-
-    const response = await fetch('/api/users/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, timestamp,hash }),
-    });
-    const data = await response.json();
+    const data = await userRegister(username, password);
     if (data.success) {
       router.push('/login');
     } else {
