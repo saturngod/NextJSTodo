@@ -1,0 +1,39 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/users/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username" : "{{username}}",
+    "password" :  "{{password}}",
+    "timestamp" : {{timestamp}},
+    "hash" : "{{hash}}"
+  }
+}
+
+vars:pre-request {
+  username: user
+  password: password
+}
+
+script:pre-request {
+  const moment = require("moment");
+  
+  const unixTimestamp = moment().unix();
+  
+  const username = bru.getVar("username");
+  const password = bru.getVar("password");
+  const CryptoJS = require("crypto-js");
+  const hash = CryptoJS.SHA256(username + password + unixTimestamp);
+  
+  bru.setVar("timestamp",unixTimestamp);
+  bru.setVar("hash",hash.toString(CryptoJS.enc.Hex));
+}
