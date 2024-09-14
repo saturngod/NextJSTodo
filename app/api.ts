@@ -86,12 +86,12 @@ export const userRegister = async (username: string, password: string) => {
   return response.json();
 }
 
-export const refreshToken = async () => {
+export const refreshToken = async (token: string) => {
   const response = await fetch('/api/token/refresh', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${refreshToken}`,
+      'Authorization': `Bearer ${token}`,
     },
   });
   return response;

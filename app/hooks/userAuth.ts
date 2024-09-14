@@ -1,39 +1,41 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { refreshToken } from '../api';
+import { useEffect, useState } from 'react';
+import * as jose from 'jose';
+import { refreshToken as apiRefreshToken } from '../api';
 
-export function useAuth() {
+export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAndRefreshToken = async () => {
       const token = localStorage.getItem('token');
-      if (!token) {
-        setIsAuthenticated(false);
-        router.push('/login');
-        return;
-      }
+      if (token) {
+        try {
+          const decodedToken = jose.decodeJwt(token);
+          if (decodedToken && typeof decodedToken !== 'string') {
+            const currentTime = Math.floor(Date.now() / 1000);
 
-      try {
-        const response = await refreshToken();
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem('token', data.accessToken);
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-          router.push('/login');
+            if (decodedToken.exp && decodedToken.exp < currentTime) {
+              const refreshToken = localStorage.getItem('refreshToken');
+              if (refreshToken) {
+                try {
+                  const response = await apiRefreshToken(refreshToken);
+                  // Handle response and update token
+                } catch (error) {
+                  console.error('Failed to refresh token', error);
+                }
+              }
+            } else {
+              setIsAuthenticated(true);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to decode token', error);
         }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-        setIsAuthenticated(false);
-        router.push('/login');
       }
     };
 
-    checkAuth();
-  }, [router]);
+    checkAndRefreshToken();
+  }, []);
 
   return { isAuthenticated };
-}
+};
