@@ -3,10 +3,10 @@
 import React from 'react';
 import ListView from './components/ListView';
 import TodoView from './components/TodoView';
-import { useLists } from './useLists';
+import { useLists } from '../hooks/useLists';
 import { useAuth } from '../hooks/userAuth';
 
-export default function TodoApp() {
+const TodoApp = () => {
 
   const { isAuthenticated } = useAuth();
   const { lists, selectedList, setSelectedList, handleAddList, handleDeleteList } = useLists();
@@ -35,3 +35,5 @@ export default function TodoApp() {
     </div>
   );
 }
+
+export default TodoApp;

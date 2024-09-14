@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { addTodo, getTodos, toggleTodo, deleteTodo } from '../api';
+import { Todo } from '@/utils/types';
+import { list } from 'postcss';
 
 export const useTodos = (mytodos: Todo[]) => {
 
@@ -8,7 +10,12 @@ export const useTodos = (mytodos: Todo[]) => {
 
   const initiTodos = async (id: number) => {
     const listDetail = await getTodos(id);
-    setTodos(listDetail.todos);
+    if(listDetail == null || listDetail.todos == null) {
+      setTodos([]);
+    }
+    else {
+      setTodos(listDetail.todos);
+    }
   }
 
   const handleAddTodo = async (title: string, listId: number) => {

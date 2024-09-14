@@ -18,6 +18,12 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, message: 'Invalid hash' }, { status: 400 });
         }
 
+        //check if user already exists
+        const existingUser = await prisma.user.findUnique({ where: { username } });
+        if (existingUser) {
+            return NextResponse.json({ success: false, message: 'Invalid Username' }, { status: 400 });
+        }
+
         // Hash password with bcrypt
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);

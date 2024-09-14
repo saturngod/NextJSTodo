@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import * as jose from 'jose';
-import { refreshToken as apiRefreshToken } from '../api';
+import { apiRefreshToken } from '../api';
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isFailRefreshToken, setIsFailRefreshToken] = useState(false);
 
   useEffect(() => {
     const checkAndRefreshToken = async () => {
+      console.log("AUTH MIDDLEWARE >>>>>>>>>>> ");
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -20,12 +22,25 @@ export const useAuth = () => {
                 try {
                   const response = await apiRefreshToken(refreshToken);
                   // Handle response and update token
+                  if(response.status === 200) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.accessToken);
+                    localStorage.setItem('refreshToken', data.refreshToken);
+                    setIsAuthenticated(true);
+                  }
+                  else {
+                    setIsAuthenticated(false);
+                    setIsFailRefreshToken(true);
+                  }
                 } catch (error) {
                   console.error('Failed to refresh token', error);
+                  setIsAuthenticated(false);
+                  setIsFailRefreshToken(true);
                 }
               }
             } else {
               setIsAuthenticated(true);
+              setIsFailRefreshToken(false);
             }
           }
         } catch (error) {
@@ -37,5 +52,5 @@ export const useAuth = () => {
     checkAndRefreshToken();
   }, []);
 
-  return { isAuthenticated };
+  return { isAuthenticated, isFailRefreshToken };
 };

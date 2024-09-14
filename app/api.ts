@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import crypto from 'crypto';
+import { List } from "@/utils/types";
 
 export const fetchLists = async () => {
   const token = localStorage.getItem('token');
@@ -86,7 +87,7 @@ export const userRegister = async (username: string, password: string) => {
   return response.json();
 }
 
-export const refreshToken = async (token: string) => {
+export const apiRefreshToken = async (token: string) => {
   const response = await fetch('/api/token/refresh', {
     method: 'POST',
     headers: {

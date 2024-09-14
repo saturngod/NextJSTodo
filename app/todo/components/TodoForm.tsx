@@ -5,7 +5,7 @@ interface TodoFormProps {
   onSubmit: (title: string, listId: number) => void;
 }
 
-export default function TodoForm({ listId, onSubmit }: TodoFormProps) {
+const TodoForm = ({ listId, onSubmit }: TodoFormProps) => {
   const [title, setTitle] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,3 +29,5 @@ export default function TodoForm({ listId, onSubmit }: TodoFormProps) {
     </form>
   );
 }
+
+export default TodoForm;

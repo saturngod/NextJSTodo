@@ -2,14 +2,19 @@ import React, { useEffect } from 'react';
 import TodoForm from './TodoForm';
 import TodoItem from './TodoItem';
 import { useTodos } from '../useTodo';
+import { List } from '@/utils/types';
 
-const TodoView = ({ selectedList }: { selectedList: List }) => {
+interface TodoViewProps {
+  selectedList: List;
+}
+
+const TodoView = ({ selectedList }: TodoViewProps) => {
 
   const { todos,initiTodos, handleAddTodo, handleToggleTodo, handleDeleteTodo } = useTodos(selectedList.todos);
 
   useEffect(() => {
     initiTodos(selectedList.id);
-  },[selectedList]);
+  },[selectedList.id]);
 
   return (
     <div className="w-2/3 pl-4 border-l">

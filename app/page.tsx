@@ -1,13 +1,9 @@
 'use client';
 
-import Link from "next/link";
-
-
+import { useAuthRedirect } from '@/app/hooks/useAuthRedirect';
 
 export default function Home() {
-  return <>
-  <h1>Todo App</h1>
-  <Link href="/login">Login</Link>
-  <Link href="/register">Register</Link>
-  </>;
+  useAuthRedirect();
+
+  return null; // No need to render anything as the user will be redirected
 }

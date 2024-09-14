@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchLists, addList, deleteList } from '../api';
+import { List } from '@/utils/types';
 
 export const useLists = () => {
   const [lists, setLists] = useState<List[]>([]);
@@ -15,7 +16,7 @@ export const useLists = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [selectedList]);
 
   const handleAddList = async (title: string) => {
     const newList = await addList(title);

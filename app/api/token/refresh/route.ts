@@ -22,7 +22,10 @@ export async function POST(request: Request) {
         const decodedToken = await jose.jwtVerify(token, secrect)
 
         if (typeof decodedToken === 'string' || decodedToken.payload.exp == null) {
-            throw new Error('Invalid token structure')
+            return NextResponse.json(
+                { success: false, message: 'Invalid token' },
+                { status: 401 }
+            )
         }
 
         const currentTime = Math.floor(Date.now() / 1000);
@@ -58,7 +61,7 @@ export async function POST(request: Request) {
         });
 
     } catch (error) {
-        console.error('Error processing refresh token:', error);
+        
         return NextResponse.json(
             { success: false, message: 'Invalid token' },
             { status: 401 }

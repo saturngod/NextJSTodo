@@ -1,6 +1,6 @@
 import React from 'react';
 import ListForm from './ListForm';
-import { useLists } from '../useLists';
+import { List } from '@/utils/types';
 
 interface ListViewProps {
   lists: List[];
