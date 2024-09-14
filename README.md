@@ -2,6 +2,10 @@
 
 Simple Todo app using NextJS , MySQL , Prisma for learning prupose.
 
+Please check git branches.
+
+Git branches are
+
 ## Step 1
 
 ![](./screenshots/step1.png)
