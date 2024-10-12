@@ -1,11 +1,11 @@
 meta {
-  name: Create
+  name: Create List
   type: http
-  seq: 1
+  seq: 3
 }
 
 post {
-  url: http://localhost:3000/api/todos
+  url: http://localhost:3000/api/lists
   body: json
   auth: bearer
 }
@@ -16,8 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "title" : "TODO API aaa",
-    "listId" : 11
+    "title": "Another One"
   }
 }
 
