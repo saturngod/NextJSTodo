@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: http://localhost:3000/api/lists
+  url: {{baseURL}}/api/lists
   body: none
   auth: bearer
 }
@@ -14,6 +14,25 @@ auth:bearer {
   token: {{accessToken}}
 }
 
-vars:pre-request {
-  accessToken: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzI2MjkwNzg5LCJleHAiOjE3MjYyOTE2ODl9.7pAqer4QoWQ_Tj8gkqq8OnkPhg91Wn2AvfcO_r6uz44
+docs {
+  ## Response
+  
+  ```json
+  [
+    {
+      "id": 11,
+      "title": "another",
+      "createdAt": "2024-09-14T02:28:55.131Z",
+      "updatedAt": "2024-09-14T02:28:55.131Z",
+      "userId": 1
+    },
+    {
+      "id": 12,
+      "title": "Another One",
+      "createdAt": "2024-09-28T03:56:39.501Z",
+      "updatedAt": "2024-09-28T03:56:39.501Z",
+      "userId": 3
+    }
+  ]
+  ```
 }

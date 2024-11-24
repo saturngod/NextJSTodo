@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/todos
+  url: {{baseURL}}/api/todos
   body: json
   auth: bearer
 }
@@ -19,8 +19,4 @@ body:json {
     "title" : "TODO API aaa",
     "listId" : 11
   }
-}
-
-vars:pre-request {
-  accessToken: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzI2MjkwNzg5LCJleHAiOjE3MjYyOTE2ODl9.7pAqer4QoWQ_Tj8gkqq8OnkPhg91Wn2AvfcO_r6uz44
 }

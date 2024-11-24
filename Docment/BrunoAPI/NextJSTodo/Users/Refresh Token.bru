@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/token/refresh
+  url: {{baseURL}}/api/token/refresh
   body: none
   auth: bearer
 }
@@ -14,8 +14,9 @@ auth:bearer {
   token: {{refreshToken}}
 }
 
-vars:pre-request {
-  refreshToken: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzI2MjkwNjkzLCJleHAiOjE3MjY4OTU0OTN9.B6KaEGEvu9_IBPSmvWDqQHGdig9fz0z4xClAyB-KhKI
+script:post-response {
+  bru.setEnvVar("accessToken",res.body.accessToken)
+  bru.setEnvVar("refreshToken",res.body.refreshToken)
 }
 
 docs {

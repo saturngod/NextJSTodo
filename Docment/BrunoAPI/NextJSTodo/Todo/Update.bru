@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: http://localhost:3000/api/todos/{{id}}
+  url: {{baseURL}}/api/todos/{{id}}
   body: json
   auth: bearer
 }
@@ -22,6 +22,5 @@ body:json {
 }
 
 vars:pre-request {
-  accessToken: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzI2MjkwNzg5LCJleHAiOjE3MjYyOTE2ODl9.7pAqer4QoWQ_Tj8gkqq8OnkPhg91Wn2AvfcO_r6uz44
   id: 5
 }

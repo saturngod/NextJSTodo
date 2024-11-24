@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/users/login
+  url: {{baseURL}}/api/users/login
   body: json
   auth: none
 }
@@ -36,4 +36,9 @@ script:pre-request {
   
   bru.setVar("timestamp",unixTimestamp);
   bru.setVar("hash",hash.toString(CryptoJS.enc.Hex));
+}
+
+script:post-response {
+  bru.setEnvVar("accessToken",res.body.accessToken)
+  bru.setEnvVar("refreshToken",res.body.refreshToken)
 }
